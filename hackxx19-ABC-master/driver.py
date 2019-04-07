@@ -1,16 +1,13 @@
 import serial
 import time
-import math
 
 BAUD_RATE = 115200
-PORT = "/dev/tty.14-DevB"
-ACCEL_PORT = "/dev/cu.usbmodem14601"
+PORT = "COM3"
+ACCEL_PORT = "COM6"
 
 TIMEOUT = 2
 
 PAUSE = False
-
-ANGLE = 90
 
 # Bytes!
 FORWARD = b"w"
@@ -44,9 +41,6 @@ def servo_right():
     bt.write(SERVO_RIGHT)
     time.sleep(TIMEOUT)
 
-def pause():
-    PAUSE = !PAUSE
-    time.sleep(TIMEOUT);
 
 
 # Setup serial port with path to port
@@ -68,18 +62,20 @@ while True:
     x_axis = results[0]
     y_axis = results[1]
     z_axis = results[2]
-    if z_axis >= 17:
-        pause()
-    if PAUSE:
-        if z_axis/y_axis * ANGLE >= 390:
+    if z_axis >= 30:
+        print("PAUSE")
+        PAUSE = not PAUSE
+        time.sleep(TIMEOUT);
+    if PAUSE == False:
+        if y_axis >= 15:
             forward()
             print("forward " + str(y_axis))
-        if z_axis/y_axis * ANGLE<= 310:
+        if y_axis <= -15:
             backwards()
             print("backward " + str(y_axis))
-        if z_axis/x_axis * ANGLE >= 380:
+        if x_axis >= 17:
             right()
             print("right " + str(x_axis))
-        if z_axis/x_axis * ANGLE <= 320:
+        if x_axis <= -17:
             left()
             print("left " + str(y_axis))
