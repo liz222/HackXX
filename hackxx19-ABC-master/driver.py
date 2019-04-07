@@ -7,6 +7,8 @@ ACCEL_PORT = "/dev/cu.usbmodem14601"
 
 TIMEOUT = 2
 
+PAUSE = False
+
 # Bytes!
 FORWARD = b"w"
 BACKWARD = b"s"
@@ -39,6 +41,11 @@ def servo_right():
     bt.write(SERVO_RIGHT)
     time.sleep(TIMEOUT)
 
+def pause():
+    PAUSE = !PAUSE
+    time.sleep(TIMEOUT);
+
+
 # Setup serial port with path to port
 bt = serial.Serial(PORT, 115200, timeout=5)
 accelerometer = serial.Serial(ACCEL_PORT, 115200, timeout=5)
@@ -46,7 +53,6 @@ bt.flushInput()
 accelerometer.flushInput()
 
 while True:
-    boolean pause;
     reader = accelerometer.readline();
     coords = reader.decode("utf-8")
     coords = coords.strip()
@@ -59,9 +65,9 @@ while True:
     x_axis = results[0]
     y_axis = results[1]
     z_axis = results[2]
-    if z_axis <= -17:
-        pause = false
-    while pause = false:
+    if z_axis >= 17:
+        pause()
+    if PAUSE:
         if y_axis >= 17:
             forward()
             print("forward " + str(y_axis))
@@ -74,5 +80,3 @@ while True:
         if x_axis <= -17:
             left()
             print("left " + str(y_axis))
-        if z_axis >= 17:
-            pause = true
