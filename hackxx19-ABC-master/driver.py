@@ -1,5 +1,6 @@
 import serial
 import time
+import math
 
 BAUD_RATE = 115200
 PORT = "/dev/tty.14-DevB"
@@ -8,6 +9,8 @@ ACCEL_PORT = "/dev/cu.usbmodem14601"
 TIMEOUT = 2
 
 PAUSE = False
+
+ANGLE = 90
 
 # Bytes!
 FORWARD = b"w"
@@ -68,15 +71,15 @@ while True:
     if z_axis >= 17:
         pause()
     if PAUSE:
-        if y_axis >= 17:
+        if z_axis/y_axis * ANGLE >= 390:
             forward()
             print("forward " + str(y_axis))
-        if y_axis <= -17:
+        if z_axis/y_axis * ANGLE<= 310:
             backwards()
             print("backward " + str(y_axis))
-        if x_axis >= 17:
+        if z_axis/x_axis * ANGLE >= 380:
             right()
             print("right " + str(x_axis))
-        if x_axis <= -17:
+        if z_axis/x_axis * ANGLE <= 320:
             left()
             print("left " + str(y_axis))
