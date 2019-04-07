@@ -46,6 +46,7 @@ bt.flushInput()
 accelerometer.flushInput()
 
 while True:
+    boolean pause;
     reader = accelerometer.readline();
     coords = reader.decode("utf-8")
     coords = coords.strip()
@@ -58,15 +59,20 @@ while True:
     x_axis = results[0]
     y_axis = results[1]
     z_axis = results[2]
-    if y_axis >= 17:
-        forward()
-        print("forward " + str(y_axis))
-    if y_axis <= -17:
-        backwards()
-        print("backward " + str(y_axis))
-    if x_axis >= 17:
-        right()
-        print("right " + str(x_axis))
-    if x_axis <= -17:
-        left()
-        print("left " + str(y_axis))
+    if z_axis <= -17:
+        pause = false
+    while pause = false:
+        if y_axis >= 17:
+            forward()
+            print("forward " + str(y_axis))
+        if y_axis <= -17:
+            backwards()
+            print("backward " + str(y_axis))
+        if x_axis >= 17:
+            right()
+            print("right " + str(x_axis))
+        if x_axis <= -17:
+            left()
+            print("left " + str(y_axis))
+        if z_axis >= 17:
+            pause = true
